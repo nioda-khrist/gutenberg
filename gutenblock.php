@@ -16,10 +16,10 @@ function plugin_start(){
     // add gutenberg script
     wp_register_script( 'guten-block-script', plugins_url('build/index.js', __FILE__), $asset_file['dependencies'], $asset_file['version'] );
 
-    // add editor style
+    // add editor styles
     wp_register_style( 'guten-block-style', plugins_url('/build/editorStyle.css', __FILE__), array('wp-edit-blocks') );
 
-    // add frontend style
+    // add frontend styles
     wp_register_style( 'guten-block-frontstyle', plugins_url('/build/frontStyle.css', __FILE__), array('wp-edit-blocks') );
 
     // add jquery in front end

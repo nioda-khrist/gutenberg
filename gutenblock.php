@@ -22,7 +22,7 @@ function plugin_start(){
     // add frontend style
     wp_register_style( 'guten-block-frontstyle', plugins_url('/build/frontStyle.css', __FILE__), array('wp-edit-blocks') );
 
-    // add jquery in frontend
+    // add jquery in front end
     wp_register_script( 'guten-jquery', plugins_url('/src/guten-jquery.js', __FILE__), array('jquery') );
 
     // register all scripts

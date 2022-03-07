@@ -25,7 +25,7 @@ function plugin_start(){
     // add jquery in frontend
     wp_register_script( 'guten-jquery', plugins_url('/src/guten-jquery.js', __FILE__), array('jquery') );
 
-    // register all scriptss
+    // register all scripts
     register_block_type( 'gutenblock/gutenblock-script', array(
         'editor_script' => 'guten-block-script',
         'editor_style' => 'guten-block-style',

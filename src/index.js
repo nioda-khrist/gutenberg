@@ -3,8 +3,9 @@ import {
   InspectorControls,
   ColorPalette,
   RichText,
+  MediaUpload,
 } from '@wordpress/block-editor';
-import { PanelBody } from '@wordpress/components';
+import { PanelBody, RangeControl } from '@wordpress/components';
 
 registerBlockType('gutenblock/gutenblock-script', {
   title: 'Guten Block',
@@ -20,9 +21,17 @@ registerBlockType('gutenblock/gutenblock-script', {
       type: 'string',
       default: 'black',
     },
+    backgroundImage: {
+      type: 'string',
+      default: null,
+    },
+    opacitySize: {
+      type: 'number',
+      default: 0.3,
+    },
   },
   edit: ({ className, attributes, setAttributes }) => {
-    const { author, authorColor } = attributes;
+    const { author, authorColor, backgroundImage } = attributes;
     // custom functions
     const updateAuthor = (name) => {
       // update current attributes
@@ -32,7 +41,14 @@ registerBlockType('gutenblock/gutenblock-script', {
       setAttributes({ authorColor: color });
       // update current attributes
     };
-
+    const onImageSelect = (image) => {
+      setAttributes({ backgroundImage: image.sizes.full.url });
+      // update current attributes
+    };
+    const onOpacitySize = (size) => {
+      setAttributes({ opacitySize: size });
+      // update current attributes
+    };
     // using rich text
     return [
       <InspectorControls style={{ marginBottom: '40px' }}>
@@ -41,6 +57,29 @@ registerBlockType('gutenblock/gutenblock-script', {
             <strong>Select color:</strong>
           </p>
           <ColorPalette value={authorColor} onChange={onColorChange} />
+        </PanelBody>
+        <PanelBody title='Background Image'>
+          <p>
+            <strong>Select image:</strong>
+          </p>
+          {backgroundImage && <img src={backgroundImage} />}
+          <MediaUpload
+            value={backgroundImage}
+            type='image'
+            onSelect={onImageSelect}
+            render={({ open }) => <button onClick={open}>Select Image</button>}
+          />
+          <p>
+            <strong>Opacity Size:</strong>
+          </p>
+          <RangeControl
+            label={'Overlay Opacity'}
+            value={opacitySize}
+            onChange={onOpacitySize}
+            min={0}
+            max={1}
+            step={0.1}
+          />
         </PanelBody>
       </InspectorControls>,
       <div className={className}>
@@ -68,6 +107,7 @@ registerBlockType('gutenblock/gutenblock-script', {
 
     return (
       <div className={className}>
+        <h1>HEHE</h1>
         <RichText.Content
           style={{ color: authorColor }}
           tagName='p'

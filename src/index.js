@@ -1,5 +1,10 @@
 import { registerBlockType } from '@wordpress/blocks';
-import { useBlockProps, RichText } from '@wordpress/block-editor';
+import {
+  InspectorControls,
+  ColorPalette,
+  RichText,
+} from '@wordpress/block-editor';
+import { PanelBody } from '@wordpress/components';
 
 registerBlockType('gutenblock/gutenblock-script', {
   title: 'Guten Block',
@@ -11,27 +16,44 @@ registerBlockType('gutenblock/gutenblock-script', {
     author: {
       type: 'string',
     },
+    authorColor: {
+      type: 'string',
+      default: 'black',
+    },
   },
   edit: ({ className, attributes, setAttributes }) => {
-    const { author } = attributes;
+    const { author, authorColor } = attributes;
     // custom functions
     const updateAuthor = (name) => {
       // update current attributes
       setAttributes({ author: name });
     };
+    const onColorChange = (color) => {
+      setAttributes({ authorColor: color });
+      // update current attributes
+    };
 
     // using rich text
-    return (
+    return [
+      <InspectorControls style={{ marginBottom: '40px' }}>
+        <PanelBody title='Font Color Settings'>
+          <p>
+            <strong>Select color:</strong>
+          </p>
+          <ColorPalette value={authorColor} onChange={onColorChange} />
+        </PanelBody>
+      </InspectorControls>,
       <div className={className}>
         <RichText
           key='editable'
           tagName='h2'
           placeholder='Author Name'
+          style={{ color: authorColor }}
           value={author}
           onChange={updateAuthor}
         />
-      </div>
-    );
+      </div>,
+    ];
 
     // using input
     // return (
@@ -42,11 +64,15 @@ registerBlockType('gutenblock/gutenblock-script', {
     // );
   },
   save: ({ className, attributes }) => {
-    const { author } = attributes;
+    const { author, authorColor } = attributes;
 
     return (
       <div className={className}>
-        <RichText.Content tagName='p' value={author} />
+        <RichText.Content
+          style={{ color: authorColor }}
+          tagName='p'
+          value={author}
+        />
       </div>
     );
   },

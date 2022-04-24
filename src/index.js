@@ -4,8 +4,12 @@ import {
   ColorPalette,
   RichText,
   MediaUpload,
+  InnerBlocks,
+  BlockControls,
+  AlignmentToolbar,
 } from '@wordpress/block-editor';
 import { PanelBody, RangeControl } from '@wordpress/components';
+const ALLOWED_BLOCKS = ['core/button'];
 
 registerBlockType('gutenblock/gutenblock-script', {
   title: 'Guten Block',
@@ -29,9 +33,19 @@ registerBlockType('gutenblock/gutenblock-script', {
       type: 'number',
       default: 0.3,
     },
+    textAlignment: {
+      type: 'string',
+      default: 'none',
+    },
   },
   edit: ({ className, attributes, setAttributes }) => {
-    const { author, authorColor, backgroundImage } = attributes;
+    const {
+      author,
+      authorColor,
+      backgroundImage,
+      opacitySize,
+      textAlignment,
+    } = attributes;
     // custom functions
     const updateAuthor = (name) => {
       // update current attributes
@@ -83,6 +97,11 @@ registerBlockType('gutenblock/gutenblock-script', {
         </PanelBody>
       </InspectorControls>,
       <div className={className}>
+        {
+          <BlockControls>
+            <AlignmentToolbar value={textAlignment} />
+          </BlockControls>
+        }
         <RichText
           key='editable'
           tagName='h2'
@@ -91,6 +110,7 @@ registerBlockType('gutenblock/gutenblock-script', {
           value={author}
           onChange={updateAuthor}
         />
+        <InnerBlocks allowedBlocks={ALLOWED_BLOCKS} />
       </div>,
     ];
 
@@ -113,6 +133,7 @@ registerBlockType('gutenblock/gutenblock-script', {
           tagName='p'
           value={author}
         />
+        <InnerBlocks.Content />
       </div>
     );
   },
